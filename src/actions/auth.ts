@@ -25,11 +25,6 @@ export async function createUser({
 }
 
 export async function logOut() {
-  try {
-    (await cookies()).delete("user");
-    // Hint client to update; the redirect also changes route
-    redirect("/login");
-  } catch (error) {
-    console.log(error);
-  }
+  (await cookies()).delete("user");
+  redirect("/login");
 }
