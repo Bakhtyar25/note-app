@@ -38,6 +38,7 @@ export async function logOut() {
 }
 
 export async function login({ email, password }: { email: string; password: string }) {
+  
   const users = await authEndpoints.login({ email, password });
   
   if (!Array.isArray(users) || users.length === 0) {

@@ -3,18 +3,28 @@ import type { NextRequest } from "next/server";
 
 // Paths that require authentication (protected routes)
 const protectedPaths = ["/"];
+// Auth routes that should be inaccessible to logged-in users
+const authPaths = ["/login", "/signup"];
 
 export function middleware(request: NextRequest) {
   try {
     const reqUrl = request.nextUrl.pathname;
     const userCookie = request.cookies.get("user");
     const isLoggedIn = !!userCookie;
-    
-
-    // Only check protected routes - don't redirect from auth pages
-    if (!isLoggedIn && protectedPaths.some((path) => reqUrl.startsWith(path))) {
-      console.log(`Redirecting unauthenticated user from ${reqUrl} to /login`);
+    const isAuthRoute = authPaths.some((path) =>
+      reqUrl === path || reqUrl.startsWith(`${path}/`)
+    );
+    const isProtectedRoute = protectedPaths.some(
+      (path) => reqUrl === path || reqUrl.startsWith(`${path}/`)
+    );
+    // If not logged in and accessing protected route (but not auth pages), redirect to login
+    if (!isLoggedIn && isProtectedRoute && !isAuthRoute) {
       return NextResponse.redirect(new URL("/login", request.url));
+    }
+
+    // If logged in and accessing auth pages, redirect to home
+    if (isLoggedIn && isAuthRoute) {
+      return NextResponse.redirect(new URL("/", request.url));
     }
 
     // Allow access to all routes
@@ -29,7 +39,5 @@ export function middleware(request: NextRequest) {
 
 // Only run middleware on protected routes to prevent conflicts
 export const config = {
-  matcher: [
-    "/"
-  ],
+  matcher: ["/", "/login", "/signup"],
 };
