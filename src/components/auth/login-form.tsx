@@ -15,9 +15,8 @@ import React, { useState, useTransition } from "react";
 import { cn } from "@/lib/utils";
 import { Eye, EyeOff } from "lucide-react";
 import { z } from "zod";
-import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
-import { createUser, login } from "@/actions/auth";
+import { login } from "@/actions/auth";
 import { toast } from "sonner";
 
 type Props = {
@@ -45,7 +44,6 @@ export default function LoginForm({ className }: Props) {
     },
   });
 
-  const router = useRouter();
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
 

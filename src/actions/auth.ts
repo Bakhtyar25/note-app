@@ -4,7 +4,6 @@ import { authEndpoints } from "@/lib/endpoints";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { toast } from "sonner";
 
 export async function createUser({
   email,
