@@ -19,6 +19,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { createUser } from "@/actions/auth";
+import { toast } from "sonner";
 
 type Props = {
   className?: string;
@@ -78,20 +79,21 @@ export default function SignupForm({ className }: Props) {
   function onSubmit(data: Input) {
 
     startTransition(async () => {
-        const payload = {
-            email: data.email,
-            password: data.password,
-        }
+      const payload = {
+        email: data.email,
+        password: data.password,
+      }
 
-        const user = await createUser(payload)
-        if (user) router.push("/")
-        
+      const user = await createUser(payload)
+      if (user) router.push("/")
+      toast.success("Signup successful")
+
     });
   }
 
   // Password hints are shown as static text; we don't compute dynamic checks here to reduce complexity
 
-  const inputClass = "bg-transparent border-none md:text-lg text-primary placeholder:text-border focus-visible:ring-0 focus:outline-none focus-visible:ring-offset-0"
+  const inputClass = " border-none md:text-lg text-primary placeholder:text-border focus-visible:ring-0 focus:outline-none focus-visible:ring-offset-0"
 
   return (
     <div className={cn("w-full lg:w-1/4 p-10", className)}>
@@ -112,7 +114,7 @@ export default function SignupForm({ className }: Props) {
                     <div className="flex items-center  authInput">
                       <Input
                         placeholder={"Enter your email"}
-                        className={cn(inputClass, "")}
+                        className={cn(inputClass, "!bg-transparent")}
                         {...field}
                       />
                     </div>
@@ -132,7 +134,7 @@ export default function SignupForm({ className }: Props) {
                     <div className="flex items-center  authInput">
                       <Input
                         placeholder={"Enter your password"}
-                        className={cn(inputClass, "")}
+                        className={cn(inputClass, "!bg-transparent")}
                         {...field}
                         type={isPasswordVisible ? "text" : "password"}
                       />
@@ -154,10 +156,10 @@ export default function SignupForm({ className }: Props) {
                     </div>
 
                   </FormControl>
-                      <div className="flex flex-col items-end text-xs font-semibold -mt-2">
-                        <p>Minimum of 8 digits.</p>
-                        <p>A minimum of 1 special character</p>
-                      </div>
+                  <div className="flex flex-col items-end text-xs font-semibold -mt-2 dark:text-white/50">
+                    <p>Minimum of 8 digits.</p>
+                    <p>A minimum of 1 special character</p>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
@@ -172,7 +174,7 @@ export default function SignupForm({ className }: Props) {
                     <div className="flex items-center  authInput">
                       <Input
                         placeholder={"Enter your password"}
-                        className={cn(inputClass, "")}
+                        className={cn(inputClass, "!bg-transparent")}
                         {...field}
                         type={isPasswordVisibleComf ? "text" : "password"}
                       />

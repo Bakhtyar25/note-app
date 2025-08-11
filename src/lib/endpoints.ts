@@ -3,6 +3,7 @@ import api from "@/lib/api";
 export const noteEndpoints = {
   notes: async (params: { UserId: string }) =>
     (await api.get(`/Users/${params.UserId}/Notes`))?.data,
+
   status: async (params: {
     UserId: string;
     id: string;
@@ -13,6 +14,7 @@ export const noteEndpoints = {
         status: params.status,
       })
     )?.data,
+
   create: async (params: {
     title: string;
     content: string;
@@ -32,6 +34,7 @@ export const noteEndpoints = {
         date: params.date,
       })
     )?.data?.data,
+
   update: async (params: {
     UserId: string;
     id: string;
@@ -43,28 +46,25 @@ export const noteEndpoints = {
     date: number; // unix seconds
   }) =>
     (
-      await api.put(
-        `/Users/${params.UserId}/Notes/${params.id}`,
-        {
-          title: params.title,
-          content: params.content,
-          priority: params.priority,
-          order: params.order,
-          // Only include status if provided to avoid flipping completed -> open unintentionally
-          ...(params.status ? { status: params.status } : {}),
-          date: params.date,
-        }
-      )
+      await api.put(`/Users/${params.UserId}/Notes/${params.id}`, {
+        title: params.title,
+        content: params.content,
+        priority: params.priority,
+        order: params.order,
+        // Only include status if provided to avoid flipping completed -> open unintentionally
+        ...(params.status ? { status: params.status } : {}),
+        date: params.date,
+      })
     )?.data,
+
   delete: async (params: { UserId: string; id: string }) =>
-    (
-      await api.delete(
-        `/Users/${params.UserId}/Notes/${params.id}`
-      )
-    )?.data,
+    (await api.delete(`/Users/${params.UserId}/Notes/${params.id}`))?.data,
 };
 
 export const authEndpoints = {
   createUser: async (params: { email: string; password: string }) =>
     (await api.post("/Users", params))?.data,
+
+  login: async (params: { email: string; password: string }) =>
+    (await api.get(`/Users?email=${params.email}`))?.data || [],
 };

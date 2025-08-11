@@ -39,7 +39,7 @@ export function DatePicker({ date, setDate }: { date: Date, setDate: (date: Date
   const [value, setValue] = React.useState(formatDate(date))
 
   return (
-    <div className="flex flex-col gap-3 w-2/5">
+    <div className="flex flex-col gap-3 w-3/5">
       <Label htmlFor="date" className="px-1 font-bold text-primary -mb-2.5 ps-3">
         Date
       </Label>

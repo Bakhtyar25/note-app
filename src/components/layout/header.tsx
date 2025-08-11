@@ -6,26 +6,22 @@ import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import LogOut from '../auth/logout'
 import { usePathname } from 'next/navigation'
-import { getCookie } from '@/lib/utils'
+import { useCookieUser } from '@/providers/cookie-provider'
+import ThemeSwitcher from '../custom/theme-switcher'
+
 
 type Props = object
 
 export default function Header({ }: Props) {
     const [isOpen, setIsOpen] = useState(false)
     const pathname = usePathname()
+    const { user } = useCookieUser()
     const [mounted, setMounted] = useState(false)
-    const [user, setUser] = useState<string | undefined>(undefined)
 
     useEffect(() => {
         setIsOpen(false)
-        // Re-read auth cookie on route change so header updates without full refresh
-        setUser(getCookie('user'))
     }, [pathname])
 
-    useEffect(() => {
-        setMounted(true)
-        setUser(getCookie('user'))
-    }, [])
 
     return (
         <div className='border-b-2 border-border '>
@@ -34,21 +30,23 @@ export default function Header({ }: Props) {
                     <Image src="/image/logoText.svg" alt="logo" width={1080} height={1080} className='w-36 h-auto ' />
                 </Link>
                 <div className='hidden md:flex items-center gap-4'>
-                    {!mounted || !user ? (
+                    <ThemeSwitcher />
+                    { !user ? (
                         <>
-                            <Link href="/login" className='btn-auth bg-transparent text-black hover:bg-foreground/20 transition-all duration-200'>
+                            <Link href="/login" className='btn-auth bg-transparent text-primary hover:bg-foreground/20 transition-all duration-200'>
                                 Login
                             </Link>
-                            <Link href="/signup" className='btn-auth bg-foreground text-white hover:bg-stone-400 transition-all duration-200'>
+                            <Link href="/signup" className='btn-auth bg-transparent text-primary hover:bg-foreground/20 transition-all duration-200'>
                                 Sign Up
                             </Link>
                         </>
-                    ) : (
+                        ) : (
                         <LogOut />
                     )}
                 </div>
-                <div className='md:hidden'>
-                    <Image src="/image/menu.svg" alt="menu" width={24} height={24} className='w-6 h-6' onClick={() => setIsOpen(!isOpen)} />
+                <div className='md:hidden flex items-center gap-4'>
+                    <ThemeSwitcher />
+                    <Image src="/image/menu.svg" alt="menu" width={24} height={24} className='size-9' onClick={() => setIsOpen(!isOpen)} />
                 </div>
                 <div
                     className={cn(
@@ -59,7 +57,7 @@ export default function Header({ }: Props) {
                     )}
                 >
                     <div className='flex justify-center p-4 items-center gap-4'>
-                        {!mounted || !user ? (
+                        {!user ? (
                             <>
                                 <Link href="/login" className='w-1/2 py-2 btn-auth bg-transparent text-black hover:bg-foreground/20 transition-all duration-200'>
                                     Login

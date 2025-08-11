@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import NotesViewSwitcher from './notes-view-switcher'
 import AddNote from './add-note'
-import Cookies from 'js-cookie'
+import { useCookieUser } from '@/providers/cookie-provider'
 
 type Props = {
     notesView: "grid" | "list"
@@ -10,12 +10,7 @@ type Props = {
 
 
 export default function NoteActions({ notesView, setNotesView }: Props) {
-    const [user, setUser] = useState<{ id?: string } | null>(null)
-
-    useEffect(() => {
-        const u = JSON.parse(Cookies.get("user") || "{}") as { id?: string }
-        setUser(u)
-    }, [])
+    const { user } = useCookieUser()
 
 
     return (

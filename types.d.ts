@@ -22,3 +22,10 @@ type Note = {
     date: Date;
     UserId: string;
 }
+
+type User = {
+    createdAt: number;
+    id: string;
+    email: string;
+    password: string;
+}

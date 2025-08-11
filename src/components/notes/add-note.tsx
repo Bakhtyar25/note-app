@@ -29,7 +29,7 @@ export default function AddNote({ UserId }: Props) {
             <span className='text-primary'>Add Note</span>
           </button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] bg-[#F8F8F8]">
+        <DialogContent className="sm:max-w-[425px] bg-background">
           <DialogHeader>
             <DialogTitle className='text-primary text-xl text-center mt-2'>Add note</DialogTitle>
           </DialogHeader>

@@ -131,17 +131,17 @@ export async function updateNote({
   }
 }
 
-export async function deleteNote(formData: FormData) {
-  const cookieStore = await cookies();
-  const userCookie = cookieStore.get("user")?.value;
-  if (!userCookie) return;
-  const user = JSON.parse(userCookie || "{}");
-  if (!user?.id) return;
-
+export async function deleteNote({
+  id,
+  UserId,
+}: {
+  id: string;
+  UserId: string;
+}) {
   try {
     const note = await noteEndpoints.delete({
-      UserId: user?.id,
-      id: formData.get("id") as string,
+      UserId: UserId,
+      id: id,
     });
     revalidatePath("/");
     return note;

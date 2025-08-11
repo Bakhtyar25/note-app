@@ -159,7 +159,7 @@
   }
 
   .authInput {
-    @apply bg-white border-2 border-border rounded-sm pe-2 py-1 aria-invalid:border-error;
+    @apply border-2 border-border rounded-sm pe-2 py-1 aria-invalid:border-error;
   }
   
 }

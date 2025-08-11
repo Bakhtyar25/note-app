@@ -17,7 +17,8 @@ import { Eye, EyeOff } from "lucide-react";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
-import { createUser } from "@/actions/auth";
+import { createUser, login } from "@/actions/auth";
+import { toast } from "sonner";
 
 type Props = {
   className?: string;
@@ -52,9 +53,13 @@ export default function LoginForm({ className }: Props) {
   function onSubmit(data: Input) {
 
     startTransition(async () => {
-      const user = await createUser({ email: data.email, password: data.password });
-      if (user) {
-        router.push("/");
+      try {
+        const result = await login({ email: data.email, password: data.password });
+        if (result?.error) {
+          toast.error(result.error);
+        }
+      } catch (redirectError) {
+        console.log("Redirect successful:", redirectError);
       }
     });
   }
@@ -69,7 +74,7 @@ export default function LoginForm({ className }: Props) {
           className="p-1 flex flex-col gap-8 "
         >
           <div className="flex w-full flex-col gap-4">
-            {/* education */}
+            {/* email input */}
             <FormField
               control={form.control}
                 name="email"
@@ -80,7 +85,7 @@ export default function LoginForm({ className }: Props) {
                     <div className="flex items-center  authInput">
                       <Input
                         placeholder={"Enter your email"}
-                        className={cn(inputClass, "")}
+                        className={cn(inputClass, "!bg-transparent")}
                         {...field}
                       />
                     </div>
@@ -90,6 +95,7 @@ export default function LoginForm({ className }: Props) {
                 </FormItem>
               )}
             />
+            {/* password input */}
             <FormField
               control={form.control}
               name="password"
@@ -101,7 +107,7 @@ export default function LoginForm({ className }: Props) {
                       
                       <Input
                         placeholder={"Enter your password"}
-                        className={cn(inputClass, "")}
+                        className={cn(inputClass, "!bg-transparent")}
                         {...field}
                         type={isPasswordVisible ? "text" : "password"}
                       />

@@ -11,7 +11,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Textarea } from "@/components/ui/textarea"
 import { DatePicker } from "@/components/custom/date-picker"
 import { createNote, updateNote } from '@/actions/note'
-import Cookies from 'js-cookie'
+import { useCookieUser } from '@/providers/cookie-provider'
+import { Loader2 } from 'lucide-react'
+import { toast } from 'sonner'
 
 type Props = {
     id?: string
@@ -25,7 +27,7 @@ type Props = {
 
 export default function AddNoteForm({ id, title, content, date, priority, update, status }: Props) {
     const [isPending, startTransition] = useTransition()
-    const user = JSON.parse(Cookies.get("user") || "{}")
+    const { user } = useCookieUser()
     type Priority = "urgent" | "high" | "low"
     const { dismiss } = DismissModal();
     const addNoteSchema = z.object({
@@ -65,7 +67,7 @@ export default function AddNoteForm({ id, title, content, date, priority, update
             } else {
                 await createNote(payload)
             }
-
+            toast.success(update ? "Note updated successfully" : "Note created successfully")
             form.reset()
             dismiss()
         })
@@ -111,16 +113,12 @@ export default function AddNoteForm({ id, title, content, date, priority, update
                                 <FormItem>
                                     <FormLabel className="font-bold text-primary -mb-1.5 ps-3">Content</FormLabel>
                                     <FormControl>
-
-
                                         <Textarea
                                             placeholder={"content..."}
-                                            className={cn("border border-border rounded-md p-2 resize-none shadow-none text-primary bg-white", inputClass)}
+                                            className={cn("border border-border max-h-20 rounded-md p-2 resize-none shadow-none text-primary bg-white", inputClass)}
                                             {...field}
                                         />
-
                                     </FormControl>
-
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -185,9 +183,9 @@ export default function AddNoteForm({ id, title, content, date, priority, update
                         <Button
                             type="submit"
                             disabled={isPending}
-                            className="rounded-md text-lg bg-border text-secondary hover:text-secondary hover:bg-border px-10 cursor-pointer"
+                            className="rounded-md disabled:bg-border w-2/5 text-lg bg-gradient-to-br from-urgent to-low text-white px-10 cursor-pointer"
                         >
-                            Add Note
+                            {isPending ? <Loader2 className="animate-spin" /> : update ? "Update" : "Add"}
                         </Button>
                     </div>
 

@@ -1,5 +1,5 @@
 import { updateNoteStatus } from '@/actions/note'
-import Cookies from 'js-cookie'
+import { useCookieUser } from '@/providers/cookie-provider'
 import { Square, SquareCheck } from 'lucide-react'
 import React, { useTransition } from 'react'
 
@@ -9,12 +9,13 @@ type Props = {
 }
 
 export default function NoteStatusSwitch({ status, id }: Props) {
-    const user = JSON.parse(Cookies.get("user") || "{}")
+    const { user } = useCookieUser()
     const [isPending, startTransition] = useTransition()
     const handleStatusChange = () => {
         startTransition(async () => {
+            if (!user?.id) return
             await updateNoteStatus({
-                UserId: user?.id,
+                UserId: user.id,
                 id: id,
                 status: status === "open" ? "completed" : "open",
             })

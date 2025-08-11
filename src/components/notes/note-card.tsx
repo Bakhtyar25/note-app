@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import DeleteNote from './delete-note'
 import NoteStatusSwitch from './note-status-switch'
 import AddNoteForm from './add-note-form'
+import ReadMore from '../custom/read-more'
 
 
 
@@ -29,7 +30,7 @@ export default function NoteCard({ id, title, content, priority, status, date }:
     }
 
     return (
-        <div className={cn('note-card group', status === "open" ? priorityColor[priority] : priorityColorComplete[priority])}>
+        <div className={cn('note-card group cursor-pointer', status === "open" ? priorityColor[priority] : priorityColorComplete[priority])}>
             <Dialog>
                 <div className='absolute top-1 right-1'>
                     <DialogTrigger asChild>
@@ -71,7 +72,11 @@ export default function NoteCard({ id, title, content, priority, status, date }:
                     <p className={cn(' font-bold whitespace-pre-wrap break-words', status === "completed" && "line-through")}>{title}</p>
                     <p className={cn('font-bold', status === "completed" && "line-through")}>{date.toLocaleDateString()}</p>
                 </div>
-                <p className={cn('whitespace-pre-wrap break-words', status === "completed" && "line-through")}>{content}</p>
+                <ReadMore
+                    text={content}
+                    className={cn('whitespace-pre-wrap break-words', status === "completed" && "line-through")}
+                    maxLines={3}
+                />
             </div>
         </div>
     )
