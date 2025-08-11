@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Note App
 
-## Getting Started
+A small, fast notes app where you can:
 
-First, run the development server:
+- Create notes with a title, content, date, and priority.
+- Switch between grid and list views.
+- Reorder notes with drag-and-drop (within their group).
+- Mark notes open or completed.
+- Sign up/log in (simple email + password). Auth state is stored in the `user` cookie.
+
+### Tech
+
+- **Next.js (App Router)** with React 19 and Turbopack dev server
+- **Tailwind CSS v4** and `next-themes` for theming
+- **Radix UI** dialogs, **lucide-react** icons
+- **react-hook-form** + **zod** validation
+- **axios** for API calls
+
+### Requirements
+
+- Node 18+ recommended
+- An API base URL exposed as `NEXT_PUBLIC_API_URL`
+
+Create a `.env.local` in the project root:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+NEXT_PUBLIC_API_URL=http://localhost:4000/api
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app expects endpoints like:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `POST /Users` → create user
+- `GET /Users/:UserId/Notes` → list notes
+- `POST /Users/:UserId/Notes` → create note
+- `PUT /Users/:UserId/Notes/:id` → update note or status
+- `DELETE /Users/:UserId/Notes/:id` → delete note
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+See `src/lib/endpoints.ts` for exact calls.
 
-## Learn More
+### Run it
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm install
+npm run dev
+# or: pnpm install && pnpm dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Open `http://localhost:3000`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### How to use
 
-## Deploy on Vercel
+1. Click Sign Up and create an account (email + password). You’ll be logged in automatically.
+2. Add a note from the header. Pick a date and priority.
+3. Toggle a note’s status (open/completed) with the checkbox icon.
+4. Reorder by dragging notes within their group:
+   - Grid view: within the same priority column
+   - List view: within each status/priority group
+5. Switch between Grid/List using the toggle in the header actions.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `dev` — start the dev server
+- `build` — production build
+- `start` — start the production server
+- `lint` — run ESLint
+
+### Project map (quick)
+
+- `src/app/(main)` — main UI
+- `src/app/(auth)` — login/sign up
+- `src/actions` — server actions for auth and notes
+- `src/lib` — axios client, endpoints, utilities
+- `src/components` — UI, notes, and layout components
+
+### Notes on data
+
+Notes are normalized in server actions. Priority is one of `urgent | high | low`. Status is `open | completed`. Dates from the API are stored as unix seconds and converted to `Date` objects in the UI.
+
+### License
+
+No license specified. Use at your own discretion.

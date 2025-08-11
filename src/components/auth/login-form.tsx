@@ -16,7 +16,8 @@ import { cn } from "@/lib/utils";
 import { Eye, EyeOff } from "lucide-react";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
+import { createUser } from "@/actions/auth";
 
 type Props = {
   className?: string;
@@ -25,12 +26,7 @@ type Props = {
 export default function LoginForm({ className }: Props) {
   type Input = z.infer<typeof registerSchema>;
   const registerSchema = z.object({
-    email: z
-      .string()
-      .regex(
-        /^(?:[0-9]{10,30}|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/,
-        "Invalid email address"
-      ),
+    email: z.string().email({ message: "Invalid email address" }),
     password: z
       .string()
       .min(8, { message: "Password must be at least 8 characters" })
@@ -50,20 +46,23 @@ export default function LoginForm({ className }: Props) {
 
   const router = useRouter();
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
-  const [isPending, setStartTransaction] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
 
   function onSubmit(data: Input) {
 
-    setStartTransaction(async () => {
-
+    startTransition(async () => {
+      const user = await createUser({ email: data.email, password: data.password });
+      if (user) {
+        router.push("/");
+      }
     });
   }
 
   const inputClass = "bg-transparent border-none md:text-lg text-primary placeholder:text-border focus-visible:ring-0 focus:outline-none focus-visible:ring-offset-0"
 
   return (
-    <div className={cn("w-1/4", className)}>
+    <div className={cn("w-full lg:w-1/4 p-10", className)}>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

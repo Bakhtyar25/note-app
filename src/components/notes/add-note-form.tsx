@@ -4,19 +4,30 @@ import React, { useTransition } from 'react'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { cn, DismissModal } from "@/lib/utils"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Textarea } from "@/components/ui/textarea"
 import { DatePicker } from "@/components/custom/date-picker"
-type Props = {}
+import { createNote, updateNote } from '@/actions/note'
+import Cookies from 'js-cookie'
 
-export default function AddNoteForm({ }: Props) {
+type Props = {
+    id?: string
+    title?: string
+    content?: string
+    date?: Date
+    priority?: "urgent" | "high" | "low"
+    update?: boolean
+    status?: "open" | "completed"
+}
+
+export default function AddNoteForm({ id, title, content, date, priority, update, status }: Props) {
     const [isPending, startTransition] = useTransition()
-
+    const user = JSON.parse(Cookies.get("user") || "{}")
     type Priority = "urgent" | "high" | "low"
-
+    const { dismiss } = DismissModal();
     const addNoteSchema = z.object({
         title: z.string().min(1, { message: "Title is required" }),
         content: z.string().min(1, { message: "Content is required" }),
@@ -29,18 +40,34 @@ export default function AddNoteForm({ }: Props) {
     const form = useForm<AddNoteFormValues>({
         resolver: zodResolver(addNoteSchema),
         defaultValues: {
-            title: "",
-            content: "",
-            date: new Date(),
-            priority: "urgent",
+            title: title || "",
+            content: content || "",
+            date: date || new Date(),
+            priority: priority || "urgent",
         },
     })
 
     function onSubmit(values: AddNoteFormValues) {
-        startTransition(() => {
-            // TODO: replace with actual submit action
-            // eslint-disable-next-line no-console
-            console.log("submit add note", values)
+        startTransition(async () => {
+            const unixSeconds = Math.floor(new Date(values.date).getTime() / 1000)
+            const payload = {
+                UserId: String(user?.id || ""),
+                title: values.title,
+                content: values.content,
+                date: unixSeconds,
+                priority: values.priority,
+                order: 0,
+                status: update ? status || "open" : "open",
+            }
+
+            if (update && id) {
+                await updateNote({ id, ...payload })
+            } else {
+                await createNote(payload)
+            }
+
+            form.reset()
+            dismiss()
         })
     }
 

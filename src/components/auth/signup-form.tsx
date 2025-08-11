@@ -12,21 +12,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useState, useTransition } from "react";
 import { cn } from "@/lib/utils";
-import {
-
-  Check,
-  Eye,
-  EyeOff,
-  Lock,
-  Mail,
-  User,
-} from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { createUser } from "@/actions/auth";
 
 type Props = {
   className?: string;
@@ -79,36 +71,30 @@ export default function SignupForm({ className }: Props) {
   });
 
   const router = useRouter();
-  const [isPending, setStartTransaction] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
 
 
   function onSubmit(data: Input) {
 
-    setStartTransaction(async () => {
+    startTransition(async () => {
+        const payload = {
+            email: data.email,
+            password: data.password,
+        }
 
+        const user = await createUser(payload)
+        if (user) router.push("/")
+        
     });
   }
 
-  const [length, setLength] = useState(false);
-  const [containNum, setContainNum] = useState(false);
-  const [upperCase, setUpperCase] = useState(false);
-  const [containSpecial, setContainSpecial] = useState(false);
-
-
-  useEffect(() => {
-    const password =
-      form.watch("password") || form.watch("password_confirmation");
-    setContainNum(/\d/.test(password));
-    setLength(password.length >= 8 && password.length <= 20);
-    setUpperCase(/[A-Z]/.test(password));
-    setContainSpecial(/[!@#$%^&*]/.test(password));
-  }, [form.watch("password"), form.watch("password_confirmation")]);
+  // Password hints are shown as static text; we don't compute dynamic checks here to reduce complexity
 
   const inputClass = "bg-transparent border-none md:text-lg text-primary placeholder:text-border focus-visible:ring-0 focus:outline-none focus-visible:ring-offset-0"
 
   return (
-    <div className={cn("w-1/4", className)}>
+    <div className={cn("w-full lg:w-1/4 p-10", className)}>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -224,7 +210,7 @@ export default function SignupForm({ className }: Props) {
               disabled={isPending}
               className="rounded-md text-lg ms-auto bg-gradient-to-br from-urgent to-low px-10 cursor-pointer"
             >
-              Signup
+              Sign Up
             </Button>
           </div>
         </form>

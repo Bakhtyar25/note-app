@@ -1,4 +1,4 @@
-import { Plus } from 'lucide-react'
+import {  Plus } from 'lucide-react'
 import React from 'react'
 import {
   Dialog,
@@ -8,14 +8,21 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import AddNoteForm from './add-note-form'
+import Link from 'next/link'
 
-type Props = {}
+type Props = {
+  UserId: string
+}
 
-export default function AddNote({ }: Props) {
+export default function AddNote({ UserId }: Props) {
   return (
     <div>
-
-      <Dialog>
+      {!UserId &&
+        <Link href="/login" className='border-2 border-border rounded-full px-2 py-1 flex items-center gap-2 h-9 cursor-pointer hover:bg-foreground/20 transition-all duration-200'>
+          <Plus className='size-5 text-primary' />
+          <span className='text-primary'>Add Note</span>
+        </Link>}
+      {!!UserId && <Dialog>
         <DialogTrigger asChild>
           <button className='border-2 border-border rounded-full px-2 py-1 flex items-center gap-2 h-9 cursor-pointer hover:bg-foreground/20 transition-all duration-200'>
             <Plus className='size-5 text-primary' />
@@ -30,7 +37,7 @@ export default function AddNote({ }: Props) {
             <AddNoteForm />
           </div>
         </DialogContent>
-      </Dialog>
+      </Dialog>}
     </div>
   )
 }

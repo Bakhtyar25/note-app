@@ -1,14 +1,14 @@
 import { cn } from '@/lib/utils'
-import { Square, SquareCheck, X } from 'lucide-react'
+import { SquarePen, X } from 'lucide-react'
 import React from 'react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
-import { Button } from '../ui/button'
 import DeleteNote from './delete-note'
+import NoteStatusSwitch from './note-status-switch'
+import AddNoteForm from './add-note-form'
 
 
 
-export default function NoteCard({ id, title, content, createdAt, priority, status }: NoteCardProps) {
-
+export default function NoteCard({ id, title, content, priority, status, date }: NoteCardProps) {
 
     const priorityColor = {
         urgent: "bg-urgent",
@@ -29,7 +29,7 @@ export default function NoteCard({ id, title, content, createdAt, priority, stat
     }
 
     return (
-        <div className={cn('note-card', status === "open" ? priorityColor[priority] : priorityColorComplete[priority])}>
+        <div className={cn('note-card group', status === "open" ? priorityColor[priority] : priorityColorComplete[priority])}>
             <Dialog>
                 <div className='absolute top-1 right-1'>
                     <DialogTrigger asChild>
@@ -40,22 +40,38 @@ export default function NoteCard({ id, title, content, createdAt, priority, stat
                             <DialogTitle className='text-center mt-2 text-primary font-bold text-2xl'>
                                 Delete This <span className={priorityTextColor[priority]}>Note</span>?
                             </DialogTitle>
-                            <DialogDescription className='text-center text-primary w-2/3 mx-auto'>To be confirmed, it will not be possible 
-                            restore the deleted note.</DialogDescription>
+                            <DialogDescription className='text-center text-primary w-2/3 mx-auto'>To be confirmed, it will not be possible
+                                restore the deleted note.</DialogDescription>
                         </DialogHeader>
                         <DeleteNote id={id} />
                     </DialogContent>
                 </div>
             </Dialog>
-            <div className='col-span-1 flex justify-center items-center'>
-                {status === "completed" ? <SquareCheck className='size-6 flex-shrink-0' /> : <Square className='size-6 flex-shrink-0' />}
-            </div>
+            <Dialog>
+                <div className='absolute top-1 left-1 opacity-0 transition-all duration-300 ease-in-out group-hover:opacity-100'>
+                    <DialogTrigger asChild>
+                        <SquarePen strokeWidth={3} className='cursor-pointer size-4 text-[#E5E5E5] flex-shrink-0' />
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                            <DialogTitle className='text-center mt-2 text-primary font-bold text-2xl'>
+                                Update <span className={priorityTextColor[priority]}>Note</span>?
+                            </DialogTitle>
+                            <DialogDescription className='text-center text-primary w-2/3 mx-auto'>Update the note details</DialogDescription>
+                        </DialogHeader>
+                        <div className="grid gap-4">
+                            <AddNoteForm id={id} update title={title} content={content} date={date} priority={priority} />
+                        </div>
+                    </DialogContent>
+                </div>
+            </Dialog>
+            <NoteStatusSwitch status={status} id={id} />
             <div className='col-span-9 flex flex-col gap-2'>
                 <div className='flex justify-between items-center'>
-                    <p className={cn(' font-bold', status === "completed" && "line-through")}>{title}</p>
-                    <p className={cn('font-bold', status === "completed" && "line-through")}>{createdAt}</p>
+                    <p className={cn(' font-bold whitespace-pre-wrap break-words', status === "completed" && "line-through")}>{title}</p>
+                    <p className={cn('font-bold', status === "completed" && "line-through")}>{date.toLocaleDateString()}</p>
                 </div>
-                <p className={cn('', status === "completed" && "line-through")}>{content}</p>
+                <p className={cn('whitespace-pre-wrap break-words', status === "completed" && "line-through")}>{content}</p>
             </div>
         </div>
     )

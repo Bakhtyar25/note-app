@@ -9,10 +9,25 @@ export function cn(...inputs: ClassValue[]) {
 
 export function getCookie(name: string) {
   if (typeof window === "undefined") {
-    // Read a cookie server-side
-    return require("next/headers").cookies().get(name)?.value;
+    // Server usage should prefer next/headers directly. Return undefined here.
+    return undefined;
   }
 
   // Read a cookie client-side
   return Cookies?.get(name);
 }
+
+
+
+export const DismissModal = () => {
+  const dismiss = () => {
+    // Radix Dialog listens for Escape to close; simulate it for a robust programmatic dismiss
+    requestAnimationFrame(() => {
+      document.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "Escape", bubbles: true })
+      );
+    });
+  };
+
+  return { dismiss };
+};
