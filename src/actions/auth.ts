@@ -5,6 +5,14 @@ import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+// Define the user interface based on what we expect from the API
+interface ApiUser {
+  id: string;
+  email: string;
+  password: string;
+  // Add other properties as needed
+}
+
 export async function createUser({
   email,
   password,
@@ -37,7 +45,7 @@ export async function login({ email, password }: { email: string; password: stri
   }
   
   const user = users.find(
-    (u: any) => String(u?.email).toLowerCase() === email.toLowerCase() && String(u?.password) === password
+    (u: ApiUser) => String(u?.email).toLowerCase() === email.toLowerCase() && String(u?.password) === password
   );
   
   if (!user) {
