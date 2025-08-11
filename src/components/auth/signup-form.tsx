@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState, useTransition } from "react";
 import { cn } from "@/lib/utils";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 
 import { z } from "zod";
 import { useRouter } from "next/navigation";
@@ -93,10 +93,10 @@ export default function SignupForm({ className }: Props) {
 
   // Password hints are shown as static text; we don't compute dynamic checks here to reduce complexity
 
-  const inputClass = " border-none md:text-lg text-primary placeholder:text-border focus-visible:ring-0 focus:outline-none focus-visible:ring-offset-0"
+  const inputClass = " border-none md:text-lg text-primary dark:text-white/90 placeholder:text-border focus-visible:ring-0 focus:outline-none focus-visible:ring-offset-0"
 
   return (
-    <div className={cn("w-full lg:w-1/4 p-10", className)}>
+    <div className={cn("w-full lg:w-2/5 p-10", className)}>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -111,10 +111,10 @@ export default function SignupForm({ className }: Props) {
                 <FormItem>
                   <label className="font-bold text-primary -mb-2.5 ps-1.5">Email</label>
                   <FormControl>
-                    <div className="flex items-center  authInput">
+                    <div className="flex items-center bg-white dark:bg-background authInput">
                       <Input
                         placeholder={"Enter your email"}
-                        className={cn(inputClass, "!bg-transparent")}
+                        className={cn(inputClass, "!bg-transparent placeholder:text-muted-foreground !shadow-none")}
                         {...field}
                       />
                     </div>
@@ -131,10 +131,10 @@ export default function SignupForm({ className }: Props) {
                 <FormItem>
                   <label className="font-bold text-primary -mb-2.5 ps-1.5">Password</label>
                   <FormControl>
-                    <div className="flex items-center  authInput">
+                    <div className="flex items-center bg-white dark:bg-background authInput">
                       <Input
                         placeholder={"Enter your password"}
-                        className={cn(inputClass, "!bg-transparent")}
+                        className={cn(inputClass, "!bg-transparent placeholder:text-muted-foreground !shadow-none")}
                         {...field}
                         type={isPasswordVisible ? "text" : "password"}
                       />
@@ -143,14 +143,14 @@ export default function SignupForm({ className }: Props) {
                           onClick={() => {
                             setIsPasswordVisible(false);
                           }}
-                          className="cursor-pointer text-quaternary/60"
+                          className="cursor-pointer text-muted-foreground"
                         />
                       ) : (
                         <Eye
                           onClick={() => {
                             setIsPasswordVisible(true);
                           }}
-                          className="cursor-pointer text-quaternary/60"
+                          className="cursor-pointer text-muted-foreground"
                         />
                       )}
                     </div>
@@ -171,10 +171,10 @@ export default function SignupForm({ className }: Props) {
                 <FormItem>
                   <label className="font-bold text-primary -mb-2.5 ps-1.5">Password Confirmation</label>
                   <FormControl>
-                    <div className="flex items-center  authInput">
+                    <div className="flex items-center bg-white dark:bg-background authInput">
                       <Input
                         placeholder={"Enter your password"}
-                        className={cn(inputClass, "!bg-transparent")}
+                        className={cn(inputClass, "!bg-transparent placeholder:text-muted-foreground !shadow-none")}
                         {...field}
                         type={isPasswordVisibleComf ? "text" : "password"}
                       />
@@ -183,14 +183,14 @@ export default function SignupForm({ className }: Props) {
                           onClick={() => {
                             setIsPasswordVisibleComf(false);
                           }}
-                          className="cursor-pointer text-quaternary/60"
+                          className="cursor-pointer text-muted-foreground"
                         />
                       ) : (
                         <Eye
                           onClick={() => {
                             setIsPasswordVisibleComf(true);
                           }}
-                          className="cursor-pointer text-quaternary/60"
+                          className="cursor-pointer text-muted-foreground"
                         />
                       )}
                     </div>
@@ -212,7 +212,7 @@ export default function SignupForm({ className }: Props) {
               disabled={isPending}
               className="rounded-md text-lg ms-auto bg-gradient-to-br from-urgent to-low px-10 cursor-pointer"
             >
-              Sign Up
+              {isPending ? <Loader2 className="animate-spin" /> : "SUBMIT"}
             </Button>
           </div>
         </form>

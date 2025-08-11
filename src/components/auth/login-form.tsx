@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState, useTransition } from "react";
 import { cn } from "@/lib/utils";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { login } from "@/actions/auth";
@@ -62,10 +62,10 @@ export default function LoginForm({ className }: Props) {
     });
   }
 
-  const inputClass = "bg-transparent border-none md:text-lg text-primary placeholder:text-border focus-visible:ring-0 focus:outline-none focus-visible:ring-offset-0"
+  const inputClass = "bg-transparent border-none md:text-lg text-primary dark:text-white/70 placeholder:text-border focus-visible:ring-0 focus:outline-none focus-visible:ring-offset-0"
 
   return (
-    <div className={cn("w-full lg:w-1/4 p-10", className)}>
+    <div className={cn("w-full lg:w-2/5 p-10", className)}>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -75,15 +75,15 @@ export default function LoginForm({ className }: Props) {
             {/* email input */}
             <FormField
               control={form.control}
-                name="email"
+              name="email"
               render={({ field }) => (
                 <FormItem>
                   <label className="font-bold text-primary -mb-2.5 ps-1.5">Email</label>
                   <FormControl>
-                    <div className="flex items-center  authInput">
+                    <div className="flex items-center bg-white dark:bg-background authInput">
                       <Input
                         placeholder={"Enter your email"}
-                        className={cn(inputClass, "!bg-transparent")}
+                        className={cn(inputClass, "!bg-transparent placeholder:text-muted-foreground !shadow-none")}
                         {...field}
                       />
                     </div>
@@ -101,11 +101,10 @@ export default function LoginForm({ className }: Props) {
                 <FormItem>
                   <label className="font-bold text-primary -mb-2.5 ps-1.5">Password</label>
                   <FormControl>
-                    <div className="flex items-center  authInput">
-                      
+                    <div className="flex items-center bg-white dark:bg-background authInput">
                       <Input
                         placeholder={"Enter your password"}
-                        className={cn(inputClass, "!bg-transparent")}
+                        className={cn(inputClass, "!bg-transparent placeholder:text-muted-foreground !shadow-none")}
                         {...field}
                         type={isPasswordVisible ? "text" : "password"}
                       />
@@ -133,7 +132,7 @@ export default function LoginForm({ className }: Props) {
             />
           </div>
 
-         
+
 
           <div className="flex justify-end">
             <Button
@@ -141,10 +140,10 @@ export default function LoginForm({ className }: Props) {
               disabled={isPending}
               className="rounded-md text-lg ms-auto bg-gradient-to-br from-urgent to-low px-10 cursor-pointer"
             >
-              Login
+              {isPending ? <Loader2 className="animate-spin" /> : "LOGIN"}
             </Button>
           </div>
-          
+
         </form>
       </Form>
     </div>

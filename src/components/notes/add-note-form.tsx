@@ -115,7 +115,7 @@ export default function AddNoteForm({ id, title, content, date, priority, update
                                     <FormControl>
                                         <Textarea
                                             placeholder={"content..."}
-                                            className={cn("border border-border max-h-20 rounded-md p-2 resize-none shadow-none text-primary bg-white", inputClass)}
+                                            className={cn("border border-border max-h-20 rounded-md p-2 resize-none shadow-none text-primary dark:text-white bg-white", inputClass)}
                                             {...field}
                                         />
                                     </FormControl>

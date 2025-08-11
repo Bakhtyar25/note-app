@@ -23,10 +23,23 @@ export function useDragAndDrop({ items, setItems, refs, predicates }: UseDragAnd
   const membershipKeys = useMemo(() => {
     const keys: Record<string, string> = {};
     Object.entries(predicates).forEach(([key, predicate]) => {
-      keys[key] = items.filter(predicate).map(n => n.id).sort().join('|');
+      keys[key] = items
+        .filter(predicate)
+        .map(n => n.id)
+        .sort()
+        .join('|');
     });
     return keys;
   }, [items, predicates]);
+
+  // Build a stable signature string so the effect below only runs when group membership changes,
+  // not when order changes or when identical values are re-created.
+  const membershipSignature = useMemo(() => {
+    return Object.keys(membershipKeys)
+      .sort()
+      .map(key => `${key}:${membershipKeys[key]}`)
+      .join('||');
+  }, [membershipKeys]);
 
   useEffect(() => {
     const swapyInstances: Array<{ destroy: () => void } | null> = [];
@@ -95,5 +108,5 @@ export function useDragAndDrop({ items, setItems, refs, predicates }: UseDragAnd
     return () => {
       swapyInstances.forEach(instance => instance?.destroy());
     };
-  }, [Object.values(membershipKeys), setItems, predicates, user?.id]);
+  }, [membershipSignature, user?.id]);
 }
