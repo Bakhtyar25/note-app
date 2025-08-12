@@ -16,6 +16,7 @@ const CookieContext = createContext<CookieContextValue | undefined>(undefined);
 
 export default function CookieProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser>(null);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
 
   const refreshFromCookie = () => {
@@ -28,19 +29,27 @@ export default function CookieProvider({ children }: { children: React.ReactNode
   };
 
   useEffect(() => {
-    refreshFromCookie();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
-
-  useEffect(() => {
+    setMounted(true);
     refreshFromCookie();
   }, []);
+
+  useEffect(() => {
+    if (mounted) {
+      refreshFromCookie();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, mounted]);
 
   const value = useMemo<CookieContextValue>(() => ({ 
     user, 
     setUser, 
     refreshFromCookie
   }), [user, refreshFromCookie]);
+
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!mounted) {
+    return <div style={{ visibility: 'hidden' }}>{children}</div>;
+  }
 
   return <CookieContext.Provider value={value}>{children}</CookieContext.Provider>;
 }

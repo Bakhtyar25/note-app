@@ -14,13 +14,66 @@ type Props = object
 
 export default function Header({ }: Props) {
     const [isOpen, setIsOpen] = useState(false)
+    const [mounted, setMounted] = useState(false)
     const pathname = usePathname()
     const { user } = useCookieUser()
 
     useEffect(() => {
+        setMounted(true)
         // Close mobile menu on route change
         setIsOpen(false)
     }, [pathname])
+
+    // Prevent hydration mismatch by not rendering user-dependent content until mounted
+    const renderAuthButtons = () => {
+        if (!mounted) return null;
+        
+        if (!user) {
+            return (
+                <>
+                    <Link href="/login" className='btn-auth bg-transparent text-primary hover:bg-foreground/20 transition-all duration-200'>
+                        Login
+                    </Link>
+                    <Link href="/signup" className='btn-auth bg-transparent text-primary hover:bg-foreground/20 transition-all duration-200'>
+                        Sign Up
+                    </Link>
+                </>
+            );
+        } else {
+            return <LogOut />;
+        }
+    };
+
+    const renderMobileAuthButtons = () => {
+        if (!mounted) return null;
+        
+        if (!user) {
+            return (
+                <>
+                    <Link
+                        href="/login"
+                        className='btn-auth bg-transparent text-primary hover:bg-foreground/20 transition-all duration-200 text-center'
+                        onClick={() => setIsOpen(false)}
+                    >
+                        Login
+                    </Link>
+                    <Link
+                        href="/signup"
+                        className='btn-auth bg-transparent text-primary hover:bg-foreground/20 transition-all duration-200 text-center'
+                        onClick={() => setIsOpen(false)}
+                    >
+                        Sign Up
+                    </Link>
+                </>
+            );
+        } else {
+            return (
+                <div className='flex justify-center'>
+                    <div onClick={() => setIsOpen(false)}><LogOut /></div>
+                </div>
+            );
+        }
+    };
 
     return (
         <div className='border-b-2 border-border'>
@@ -32,18 +85,7 @@ export default function Header({ }: Props) {
                 {/* Desktop actions */}
                 <div className='hidden md:flex items-center gap-4 min-w-[260px] justify-end'>
                     <ThemeSwitcher />
-                    {!user ? (
-                        <>
-                            <Link href="/login" className='btn-auth bg-transparent text-primary hover:bg-foreground/20 transition-all duration-200'>
-                                Login
-                            </Link>
-                            <Link href="/signup" className='btn-auth bg-transparent text-primary hover:bg-foreground/20 transition-all duration-200'>
-                                Sign Up
-                            </Link>
-                        </>
-                    ) : (
-                        <LogOut />
-                    )}
+                    {renderAuthButtons()}
                 </div>
 
                 {/* Mobile trigger */}
@@ -84,28 +126,7 @@ export default function Header({ }: Props) {
                         </button>
                     </div>
                     <div className='p-4 flex flex-col gap-3'>
-                        {!user ? (
-                            <>
-                                <Link
-                                    href="/login"
-                                    className='btn-auth bg-transparent text-primary hover:bg-foreground/20 transition-all duration-200 text-center'
-                                    onClick={() => setIsOpen(false)}
-                                >
-                                    Login
-                                </Link>
-                                <Link
-                                    href="/signup"
-                                    className='btn-auth bg-transparent text-primary hover:bg-foreground/20 transition-all duration-200 text-center'
-                                    onClick={() => setIsOpen(false)}
-                                >
-                                    Sign Up
-                                </Link>
-                            </>
-                        ) : (
-                            <div className='flex justify-center'>
-                                <div onClick={() => setIsOpen(false)}><LogOut /></div>
-                            </div>
-                        )}
+                        {renderMobileAuthButtons()}
                     </div>
                 </nav>
             </header>

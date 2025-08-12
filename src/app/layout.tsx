@@ -5,6 +5,8 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import Header from "@/components/layout/header";
 import CookieProvider from "@/providers/cookie-provider";
 import { Toaster } from "@/components/ui/sonner";
+import ClientOnly from "@/components/custom/client-only";
+import ErrorBoundary from "@/components/custom/error-boundary";
 
 const raleway = Raleway({
   subsets: ["cyrillic"],
@@ -26,18 +28,24 @@ export default function RootLayout({
         <link rel="icon" href="/image/logo.svg" sizes="any" />
       </head>
       <body className={`${raleway.className} antialiased`}>
-        <CookieProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Header />
-            <Toaster />
-            <div className="bg-background">{children}</div>
-          </ThemeProvider>
-        </CookieProvider>
+        <ErrorBoundary>
+          <CookieProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="light"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <ClientOnly>
+                <Header />
+              </ClientOnly>
+              <ClientOnly>
+                <Toaster />
+              </ClientOnly>
+              <div className="bg-background">{children}</div>
+            </ThemeProvider>
+          </CookieProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );
