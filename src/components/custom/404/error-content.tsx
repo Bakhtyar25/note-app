@@ -1,3 +1,5 @@
+"use client"
+
 export default function ErrorContent() {
   return (
     <div className="mb-8">

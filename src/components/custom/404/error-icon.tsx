@@ -1,4 +1,5 @@
 import { AlertTriangle } from "lucide-react";
+"use client"
 
 export default function ErrorIcon() {
   return (
