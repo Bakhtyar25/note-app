@@ -34,14 +34,14 @@ export default function NoteCard({ id, title, content, priority, status, date }:
             <Dialog>
                 <div className='absolute top-1 right-1'>
                     <DialogTrigger asChild>
-                        <X strokeWidth={3} className='cursor-pointer size-4 text-[#E5E5E5] flex-shrink-0' />
+                        <X strokeWidth={3} className='cursor-pointer size-4 text-white/90 flex-shrink-0' />
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[425px]">
                         <DialogHeader>
-                            <DialogTitle className='text-center mt-2 text-primary font-bold text-2xl'>
+                            <DialogTitle className='text-center mt-2 text-primary dark:text-muted-foreground font-bold text-2xl'>
                                 Delete This <span className={priorityTextColor[priority]}>Note</span>?
                             </DialogTitle>
-                            <DialogDescription className='text-center text-primary w-2/3 mx-auto'>To be confirmed, it will not be possible
+                            <DialogDescription className='text-center text-primary dark:text-muted-foreground w-2/3 mx-auto'>To be confirmed, it will not be possible
                                 restore the deleted note.</DialogDescription>
                         </DialogHeader>
                         <DeleteNote id={id} />
@@ -51,14 +51,14 @@ export default function NoteCard({ id, title, content, priority, status, date }:
             <Dialog>
                 <div className='absolute top-1 left-1 opacity-0 transition-all duration-300 ease-in-out group-hover:opacity-100'>
                     <DialogTrigger asChild>
-                        <SquarePen strokeWidth={3} className='cursor-pointer size-4 text-[#E5E5E5] flex-shrink-0' />
+                        <SquarePen strokeWidth={3} className='cursor-pointer size-4 text-white/90 flex-shrink-0' />
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[425px]">
                         <DialogHeader>
-                            <DialogTitle className='text-center mt-2 text-primary font-bold text-2xl'>
+                            <DialogTitle className='text-center mt-2 text-primary dark:text-foreground font-bold text-2xl'>
                                 Update <span className={priorityTextColor[priority]}>Note</span>?
                             </DialogTitle>
-                            <DialogDescription className='text-center text-primary w-2/3 mx-auto'>Update the note details</DialogDescription>
+                            <DialogDescription className='text-center text-primary dark:text-foreground w-2/3 mx-auto'>Update the note details</DialogDescription>
                         </DialogHeader>
                         <div className="grid gap-4">
                             <AddNoteForm id={id} update title={title} content={content} date={date} priority={priority} />

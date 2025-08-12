@@ -57,7 +57,7 @@ export default function LoginForm({ className }: Props) {
           toast.error(result.error);
         }
       } catch (redirectError) {
-        console.log("Redirect successful:", redirectError);
+        // console.log("Redirect successful:", redirectError);
       }
     });
   }

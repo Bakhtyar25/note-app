@@ -19,14 +19,14 @@ export default function AddNote({ UserId }: Props) {
     <div>
       {!UserId &&
         <Link href="/login" className='border-2 border-border rounded-full px-2 py-1 flex items-center gap-2 h-9 cursor-pointer hover:bg-foreground/20 transition-all duration-200'>
-          <Plus className='size-5 text-primary' />
-          <span className='text-primary'>Add Note</span>
+          <Plus className='size-5 text-primary dark:text-foreground' />
+          <span className='text-primary dark:text-foreground'>Add Note</span>
         </Link>}
       {!!UserId && <Dialog>
         <DialogTrigger asChild>
           <button className='border-2 border-border rounded-full px-2 py-1 flex items-center gap-2 h-9 cursor-pointer hover:bg-foreground/20 transition-all duration-200'>
-            <Plus className='size-5 text-primary' />
-            <span className='text-primary'>Add Note</span>
+            <Plus className='size-5 text-primary dark:text-foreground' />
+            <span className='text-primary dark:text-foreground'>Add Note</span>
           </button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px] bg-background">

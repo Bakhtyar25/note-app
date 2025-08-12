@@ -9,7 +9,7 @@ type Props = {
 
 export default function NotesViewSwitcher({ notesView, setNotesView }: Props) {
     const btnClass = (view: "grid" | "list") => {
-        return cn("h-full px-2 flex items-center gap-1 cursor-pointer transition-all duration-300 bg-transparent text-border", notesView === view && "bg-border/25 text-primary")
+        return cn("h-full px-2 flex items-center gap-1 cursor-pointer transition-all duration-300 bg-transparent text-border dark:text-muted-foreground", notesView === view && "bg-border/25 dark:bg-border/75 text-primary dark:text-foreground")
     }
 
     return (

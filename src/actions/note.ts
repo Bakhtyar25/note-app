@@ -55,7 +55,7 @@ export async function getNotes() {
       .filter((n): n is Note => !!n);
     return normalized;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 }
 

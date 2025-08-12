@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Raleway } from "next/font/google";
 import "@/app/globals.css";
 import { ThemeProvider } from "@/providers/theme-provider";
 import Header from "@/components/layout/header";
 import CookieProvider from "@/providers/cookie-provider";
 import { Toaster } from "@/components/ui/sonner";
 
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  subsets: ["latin"],
+const raleway = Raleway({
+  subsets: ["cyrillic"],
 });
 
 export const metadata: Metadata = {
@@ -23,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-        <body className={`${montserrat.variable} antialiased`}>
+        <body className={`${raleway.className} antialiased`}>
         <CookieProvider>
           <ThemeProvider
             attribute="class"

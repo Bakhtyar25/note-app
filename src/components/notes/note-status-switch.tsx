@@ -25,7 +25,7 @@ export default function NoteStatusSwitch({ status, id }: Props) {
   return (
     <div className='col-span-1 flex justify-center items-center'>
         <button onClick={handleStatusChange} disabled={isPending}>
-            {status === "completed" ? <SquareCheck className='size-6 flex-shrink-0 cursor-pointer' /> : <Square className='size-6 flex-shrink-0 cursor-pointer' />}
+            {status === "completed" ? <SquareCheck className='size-6 flex-shrink-0 cursor-pointer ' /> : <Square className='size-6 flex-shrink-0 cursor-pointer' />}
         </button>
     </div>
     

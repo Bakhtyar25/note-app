@@ -48,7 +48,7 @@ export function DatePicker({ date, setDate }: { date: Date, setDate: (date: Date
           id="date"
           value={value}
           placeholder="June 01, 2025"
-          className="bg-white pr-10 cursor-pointer border border-border rounded-md p-2 shadow-none text-primary"
+          className="bg-white pr-10 cursor-pointer border border-border rounded-md p-2 shadow-none text-primary dark:text-foreground  "
           onChange={(e) => {
             const date = new Date(e.target.value)
             setValue(e.target.value)

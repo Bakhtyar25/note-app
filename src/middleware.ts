@@ -28,7 +28,6 @@ export function middleware(request: NextRequest) {
     }
 
     // Allow access to all routes
-    console.log(`Allowing access to: ${reqUrl}`);
     return NextResponse.next();
     
   } catch (error) {
