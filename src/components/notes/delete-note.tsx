@@ -9,7 +9,6 @@ import { toast } from 'sonner'
 
 type Props = {
   id: string
-  title: string
 }
 
 export default function DeleteNote({ id }: Props) {

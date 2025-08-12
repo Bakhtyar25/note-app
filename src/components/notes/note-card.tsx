@@ -44,7 +44,7 @@ export default function NoteCard({ id, title, content, priority, status, date }:
                             <DialogDescription className='text-center text-primary dark:text-muted-foreground w-2/3 mx-auto'>To be confirmed, it will not be possible
                                 restore the deleted note.</DialogDescription>
                         </DialogHeader>
-                        <DeleteNote id={id} title={title} />
+                        <DeleteNote id={id}/>
                     </DialogContent>
                 </div>
             </Dialog>
