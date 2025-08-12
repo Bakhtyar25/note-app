@@ -10,9 +10,7 @@ import { Loader2 } from 'lucide-react'
 
 import { useCookieUser } from '@/providers/cookie-provider'
 import { logOut } from '@/actions/auth'
-import { cn } from '@/lib/utils'
 import ThemeSwitcher from '../custom/theme-switcher'
-import LogOut from '../auth/logout'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
@@ -75,7 +73,14 @@ export default function Header() {
       )
     }
 
-    return <LogOut />
+    return (
+      <button 
+        className="btn-auth bg-transparent text-primary hover:bg-foreground/20 transition-all duration-200"
+        onClick={() => setIsLogoutOpen(true)}
+      >
+        Logout
+      </button>
+    )
   }
 
   // Mobile authentication buttons
@@ -106,45 +111,12 @@ export default function Header() {
     }
 
     return (
-      <Dialog open={isLogoutOpen} onOpenChange={setIsLogoutOpen}>
-        <DialogTrigger asChild>
-          <button 
-            className="btn-auth bg-transparent text-primary hover:bg-foreground/20 transition-all duration-200 text-center"
-            onClick={() => setIsLogoutOpen(true)}
-          >
-            Logout
-          </button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle className="text-center mt-2 text-primary font-bold text-2xl">
-              Do You Want to <span className="text-red-500">Logout</span>?
-            </DialogTitle>
-            <DialogDescription className="text-center text-primary w-2/3 mx-auto">
-              Please confirm if you want to logout
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="flex justify-center items-center gap-4">
-            <Button 
-              type="button" 
-              variant="default" 
-              className="bg-success hover:bg-success/80 text-white"
-              onClick={() => setIsLogoutOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button 
-              disabled={isPending} 
-              type="submit" 
-              className="w-full md:w-1/2" 
-              variant="destructive" 
-              onClick={handleLogout}
-            >
-              {isPending ? <Loader2 className="animate-spin" /> : "Logout"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <button 
+        className="btn-auth bg-transparent text-primary hover:bg-foreground/20 transition-all duration-200 text-center"
+        onClick={() => setIsLogoutOpen(true)}
+      >
+        Logout
+      </button>
     )
   }
 
@@ -197,6 +169,39 @@ export default function Header() {
           </Sheet>
         </div>
       </div>
+
+      {/* Logout Dialog - rendered outside of conditional components */}
+      <Dialog open={isLogoutOpen} onOpenChange={setIsLogoutOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle className="text-center mt-2 text-primary font-bold text-2xl">
+              Do You Want to <span className="text-red-500">Logout</span>?
+            </DialogTitle>
+            <DialogDescription className="text-center text-primary w-2/3 mx-auto">
+              Please confirm if you want to logout
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex justify-center items-center gap-4">
+            <Button 
+              type="button" 
+              variant="default" 
+              className="bg-success hover:bg-success/80 text-white"
+              onClick={() => setIsLogoutOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button 
+              disabled={isPending} 
+              type="submit" 
+              className="w-full md:w-1/2" 
+              variant="destructive" 
+              onClick={handleLogout}
+            >
+              {isPending ? <Loader2 className="animate-spin" /> : "Logout"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </header>
   )
 }

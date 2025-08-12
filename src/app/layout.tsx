@@ -29,12 +29,7 @@ export default function RootLayout({
       <body className={`${raleway.className} antialiased`} suppressHydrationWarning>
         <ErrorBoundary>
           <CookieProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="light"
-              enableSystem
-              disableTransitionOnChange
-            >
+            <ThemeProvider>
               <Header />
               <Toaster />
               <div className="bg-background">{children}</div>
