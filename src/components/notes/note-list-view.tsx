@@ -40,12 +40,12 @@ export default function NoteListView({ notes }: Props) {
   // Group notes by status and priority
   const groups = useMemo(() => {
     const openUrgent = items.filter(n => n.status === 'open' && n.priority === 'urgent').sort((a,b) => a.order - b.order);
-    const openHigh = items.filter(n => n.status === 'open' && n.priority === 'high').sort((a,b) => a.order - b.order);
-    const openLow = items.filter(n => n.status === 'open' && n.priority === 'low').sort((a,b) => a.order - b.order);
     const doneUrgent = items.filter(n => n.status === 'completed' && n.priority === 'urgent').sort((a,b) => a.order - b.order);
+    const openHigh = items.filter(n => n.status === 'open' && n.priority === 'high').sort((a,b) => a.order - b.order);
     const doneHigh = items.filter(n => n.status === 'completed' && n.priority === 'high').sort((a,b) => a.order - b.order);
+    const openLow = items.filter(n => n.status === 'open' && n.priority === 'low').sort((a,b) => a.order - b.order);
     const doneLow = items.filter(n => n.status === 'completed' && n.priority === 'low').sort((a,b) => a.order - b.order);
-    return { openUrgent, openHigh, openLow, doneUrgent, doneHigh, doneLow };
+    return { openUrgent, doneUrgent, openHigh, doneHigh, openLow, doneLow };
   }, [items]);
 
   return (
@@ -71,12 +71,12 @@ export default function NoteListView({ notes }: Props) {
       {/* Notes Container */}
       <div className='col-span-1 md:col-span-4 lg:mt-6'>
         <div className='flex flex-col gap-4 w-full lg:w-3/5'>
-          {/* Open Groups */}
+          {/* Urgent Priority Groups */}
           {groups.openUrgent.length > 0 && (
             <div ref={refs.openUrgent} className='flex flex-col gap-4'>
-              {groups.openUrgent.map(n => (
-                <div key={n.id} data-swapy-slot={n.id}>
-                  <div data-swapy-item={n.id}>
+              {groups.openUrgent.map((n, index) => (
+                <div key={`urgent-open-${n.id}`} data-swapy-slot={`urgent-open-${n.id}`}>
+                  <div data-swapy-item={`urgent-open-${n.id}`}>
                     <NoteCard 
                       id={n.id} 
                       title={n.title} 
@@ -92,52 +92,32 @@ export default function NoteListView({ notes }: Props) {
             </div>
           )}
 
-          {groups.openHigh.length > 0 && (
-            <div ref={refs.openHigh} className='flex flex-col gap-4'>
-              {groups.openHigh.map(n => (
-                <div key={n.id} data-swapy-slot={n.id}>
-                  <div data-swapy-item={n.id}>
-                    <NoteCard 
-                      id={n.id} 
-                      title={n.title} 
-                      content={n.content} 
-                      createdAt={new Date(n.createdAt).toLocaleDateString()} 
-                      priority={n.priority} 
-                      status={n.status} 
-                      date={n.date} 
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {groups.openLow.length > 0 && (
-            <div ref={refs.openLow} className='flex flex-col gap-4'>
-              {groups.openLow.map(n => (
-                <div key={n.id} data-swapy-slot={n.id}>
-                  <div data-swapy-item={n.id}>
-                    <NoteCard 
-                      id={n.id} 
-                      title={n.title} 
-                      content={n.content} 
-                      createdAt={new Date(n.createdAt).toLocaleDateString()} 
-                      priority={n.priority} 
-                      status={n.status} 
-                      date={n.date} 
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Completed Groups */}
           {groups.doneUrgent.length > 0 && (
             <div ref={refs.doneUrgent} className='flex flex-col gap-4'>
-              {groups.doneUrgent.map(n => (
-                <div key={n.id} data-swapy-slot={n.id}>
-                  <div data-swapy-item={n.id}>
+              {groups.doneUrgent.map((n, index) => (
+                <div key={`urgent-done-${n.id}`} data-swapy-slot={`urgent-done-${n.id}`}>
+                  <div data-swapy-item={`urgent-done-${n.id}`}>
+                    <NoteCard 
+                      id={n.id} 
+                      title={n.title} 
+                      content={n.content} 
+                      createdAt={new Date(n.createdAt).toLocaleDateString()} 
+                      priority={n.priority} 
+                      status={n.status} 
+                      date={n.date} 
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* High Priority Groups */}
+          {groups.openHigh.length > 0 && (
+            <div ref={refs.openHigh} className='flex flex-col gap-4'>
+              {groups.openHigh.map((n, index) => (
+                <div key={`high-open-${n.id}`} data-swapy-slot={`high-open-${n.id}`}>
+                  <div data-swapy-item={`high-open-${n.id}`}>
                     <NoteCard 
                       id={n.id} 
                       title={n.title} 
@@ -155,9 +135,30 @@ export default function NoteListView({ notes }: Props) {
 
           {groups.doneHigh.length > 0 && (
             <div ref={refs.doneHigh} className='flex flex-col gap-4'>
-              {groups.doneHigh.map(n => (
-                <div key={n.id} data-swapy-slot={n.id}>
-                  <div data-swapy-item={n.id}>
+              {groups.doneHigh.map((n, index) => (
+                <div key={`high-done-${n.id}`} data-swapy-slot={`high-done-${n.id}`}>
+                  <div data-swapy-item={`high-done-${n.id}`}>
+                    <NoteCard 
+                      id={n.id} 
+                      title={n.title} 
+                      content={n.content} 
+                      createdAt={new Date(n.createdAt).toLocaleDateString()} 
+                      priority={n.priority} 
+                      status={n.status} 
+                      date={n.date} 
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Low Priority Groups */}
+          {groups.openLow.length > 0 && (
+            <div ref={refs.openLow} className='flex flex-col gap-4'>
+              {groups.openLow.map((n, index) => (
+                <div key={`low-open-${n.id}`} data-swapy-slot={`low-open-${n.id}`}>
+                  <div data-swapy-item={`low-open-${n.id}`}>
                     <NoteCard 
                       id={n.id} 
                       title={n.title} 
@@ -175,9 +176,9 @@ export default function NoteListView({ notes }: Props) {
 
           {groups.doneLow.length > 0 && (
             <div ref={refs.doneLow} className='flex flex-col gap-4'>
-              {groups.doneLow.map(n => (
-                <div key={n.id} data-swapy-slot={n.id}>
-                  <div data-swapy-item={n.id}>
+              {groups.doneLow.map((n, index) => (
+                <div key={`low-done-${n.id}`} data-swapy-slot={`low-done-${n.id}`}>
+                  <div data-swapy-item={`low-done-${n.id}`}>
                     <NoteCard 
                       id={n.id} 
                       title={n.title} 

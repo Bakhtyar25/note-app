@@ -59,8 +59,16 @@ export function useDragAndDrop({ items, setItems, refs, predicates }: UseDragAnd
         const newOrder: Record<string, number> = {};
         
         slots.forEach((slot, index) => {
-          const id = slot.dataset.swapySlot;
-          if (id) newOrder[id] = index;
+          const slotId = slot.dataset.swapySlot;
+          if (slotId) {
+            // Extract the actual note ID from the prefixed slot ID
+            // Format: "priority-status-noteId" (e.g., "urgent-open-123")
+            const parts = slotId.split('-');
+            if (parts.length >= 3) {
+              const noteId = parts.slice(2).join('-'); // Handle IDs that might contain hyphens
+              newOrder[noteId] = index;
+            }
+          }
         });
 
         // Optimistic update
