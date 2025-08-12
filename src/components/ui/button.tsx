@@ -47,15 +47,17 @@ function Button({
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean
   }) {
-  const Comp = asChild ? Slot : "button"
-
+  // Explicitly type as React.ElementType to avoid type issues
+  const Comp: React.ElementType = asChild ? Slot : "button";
+  
+  // Always return JSX
   return (
     <Comp
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }),"cursor-pointer")}
+      className={cn(buttonVariants({ variant, size, className }), "cursor-pointer")}
       {...props}
     />
-  )
+  );
 }
 
 export { Button, buttonVariants }
