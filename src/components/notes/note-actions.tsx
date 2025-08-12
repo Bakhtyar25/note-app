@@ -12,7 +12,6 @@ type Props = {
 export default function NoteActions({ notesView, setNotesView }: Props) {
     const { user } = useCookieUser()
 
-
     return (
         <div className='flex items-center gap-2'>
             <AddNote UserId={user?.id ?? ""} />

@@ -84,10 +84,6 @@ export default function Header({ }: Props) {
                         </button>
                     </div>
                     <div className='p-4 flex flex-col gap-3'>
-                        <div className='flex items-center justify-between'>
-                            <span className='text-sm text-muted-foreground'>Theme</span>
-                            <ThemeSwitcher />
-                        </div>
                         {!user ? (
                             <>
                                 <Link

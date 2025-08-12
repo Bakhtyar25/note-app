@@ -18,6 +18,7 @@ import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { login } from "@/actions/auth";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type Props = {
   className?: string;
@@ -46,18 +47,23 @@ export default function LoginForm({ className }: Props) {
 
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
 
   function onSubmit(data: Input) {
-
     startTransition(async () => {
       try {
         const result = await login({ email: data.email, password: data.password });
+        
         if (result?.error) {
           toast.error(result.error);
+        } else if (result?.success) {
+          // Handle successful login and redirect
+          router.push("/?welcome=true");
         }
-      } catch (redirectError) {
-        // console.log("Redirect successful:", redirectError);
+      } catch (error) {
+       
+        toast.error("An unexpected error occurred. Please try again.");
       }
     });
   }

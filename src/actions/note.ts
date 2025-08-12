@@ -55,7 +55,6 @@ export async function getNotes() {
       .filter((n): n is Note => !!n);
     return normalized;
   } catch (error) {
-    // console.log(error);
   }
 }
 
@@ -90,7 +89,6 @@ export async function createNote({
 
     return note;
   } catch (error) {
-    console.log(error);
   }
 }
 
@@ -127,7 +125,6 @@ export async function updateNote({
     revalidatePath("/");
     return note;
   } catch (error) {
-    console.log(error);
   }
 }
 
@@ -146,7 +143,6 @@ export async function deleteNote({
     revalidatePath("/");
     return note;
   } catch (error) {
-    console.log(error);
   }
 }
 
@@ -168,6 +164,5 @@ export async function updateNoteStatus({
     revalidatePath("/");
     return note;
   } catch (error: unknown) {
-    console.log((error as { response?: unknown })?.response);
   }
 }

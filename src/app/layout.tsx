@@ -22,7 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-        <body className={`${raleway.className} antialiased`}>
+      <head>
+        <link rel="icon" href="/image/logo.svg" sizes="any" />
+      </head>
+      <body className={`${raleway.className} antialiased`}>
         <CookieProvider>
           <ThemeProvider
             attribute="class"

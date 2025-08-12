@@ -44,12 +44,12 @@ export default function NoteCard({ id, title, content, priority, status, date }:
                             <DialogDescription className='text-center text-primary dark:text-muted-foreground w-2/3 mx-auto'>To be confirmed, it will not be possible
                                 restore the deleted note.</DialogDescription>
                         </DialogHeader>
-                        <DeleteNote id={id} />
+                        <DeleteNote id={id} title={title} />
                     </DialogContent>
                 </div>
             </Dialog>
             <Dialog>
-                <div className='absolute top-1 left-1 opacity-0 transition-all duration-300 ease-in-out group-hover:opacity-100'>
+                <div className='absolute top-1 left-1 lg:opacity-0 transition-all duration-300 ease-in-out lg:group-hover:opacity-100'>
                     <DialogTrigger asChild>
                         <SquarePen strokeWidth={3} className='cursor-pointer size-4 text-white/90 flex-shrink-0' />
                     </DialogTrigger>

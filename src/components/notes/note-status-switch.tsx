@@ -8,23 +8,24 @@ type Props = {
     id: string
 }
 
-export default function NoteStatusSwitch({ status, id }: Props) {
-    const { user } = useCookieUser()
+export default function NoteStatusSwitch({ id, status }: Props) {
     const [isPending, startTransition] = useTransition()
-    const handleStatusChange = () => {
+    const { user } = useCookieUser()
+
+    const handleStatusChange = (newStatus: "open" | "completed") => {
         startTransition(async () => {
             if (!user?.id) return
             await updateNoteStatus({
                 UserId: user.id,
                 id: id,
-                status: status === "open" ? "completed" : "open",
+                status: newStatus,
             })
         })
     }
 
   return (
     <div className='col-span-1 flex justify-center items-center'>
-        <button onClick={handleStatusChange} disabled={isPending}>
+        <button onClick={() => handleStatusChange(status === "open" ? "completed" : "open")} disabled={isPending}>
             {status === "completed" ? <SquareCheck className='size-6 flex-shrink-0 cursor-pointer ' /> : <Square className='size-6 flex-shrink-0 cursor-pointer' />}
         </button>
     </div>

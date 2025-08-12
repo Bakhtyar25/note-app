@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 type Props = {
   text: string;
   className?: string;
-  maxLines?: number; // collapses to this many lines
-  lineHeightPx?: number; // used to compute collapsed height, default 24px (leading-6)
+  maxLines?: number;
+  lineHeightPx?: number;
 };
 
 export default function ReadMore({ text, className, maxLines = 3, lineHeightPx = 24 }: Props) {

@@ -23,12 +23,9 @@ export async function createUser({
   try {
     const user = await authEndpoints.createUser({ email, password });
     (await cookies()).set("user", JSON.stringify(user));
-    // notify client to update header state
-    // no-op on server; client reads cookie on route change
     revalidatePath("/");
     return user;
   } catch (error) {
-    console.log(error);
   }
 }
 
@@ -38,22 +35,29 @@ export async function logOut() {
 }
 
 export async function login({ email, password }: { email: string; password: string }) {
-  
-  const users = await authEndpoints.login({ email, password });
-  
-  if (!Array.isArray(users) || users.length === 0) {
+  try {
+    const users = await authEndpoints.login({ email, password });
+    
+    if (!Array.isArray(users) || users.length === 0) {
+      return { error: "Invalid email or password" } as const;
+    }
+    
+    const user = users.find(
+      (u: ApiUser) => String(u?.email).toLowerCase() === email.toLowerCase() && String(u?.password) === password
+    );
+    
+    if (!user) {
+      return { error: "Invalid email or password" } as const;
+    }
+    
+    // Set cookie and revalidate
+    (await cookies()).set("user", JSON.stringify(user));
+    revalidatePath("/");
+    
+    // Return success instead of redirecting here
+    return { success: true, user } as const;
+    
+  } catch (error) {
     return { error: "Invalid email or password" } as const;
   }
-  
-  const user = users.find(
-    (u: ApiUser) => String(u?.email).toLowerCase() === email.toLowerCase() && String(u?.password) === password
-  );
-  
-  if (!user) {
-    return { error: "Invalid email or password" } as const;
-  }
-  
-  (await cookies()).set("user", JSON.stringify(user));
-  revalidatePath("/");
-  redirect("/?welcome=true");
 }

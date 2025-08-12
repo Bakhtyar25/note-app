@@ -91,7 +91,7 @@ export default function SignupForm({ className }: Props) {
     });
   }
 
-  // Password hints are shown as static text; we don't compute dynamic checks here to reduce complexity
+
 
   const inputClass = " border-none md:text-lg text-primary dark:text-white/90 placeholder:text-border focus-visible:ring-0 focus:outline-none focus-visible:ring-offset-0"
 

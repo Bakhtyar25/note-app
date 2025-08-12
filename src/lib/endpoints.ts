@@ -67,4 +67,5 @@ export const authEndpoints = {
 
   login: async (params: { email: string; password: string }) =>
     (await api.get(`/Users?email=${params.email}`))?.data || [],
+  
 };

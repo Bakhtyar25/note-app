@@ -30,6 +30,7 @@ export default function AddNoteForm({ id, title, content, date, priority, update
     const { user } = useCookieUser()
     type Priority = "urgent" | "high" | "low"
     const { dismiss } = DismissModal();
+    
     const addNoteSchema = z.object({
         title: z.string().min(1, { message: "Title is required" }),
         content: z.string().min(1, { message: "Content is required" }),

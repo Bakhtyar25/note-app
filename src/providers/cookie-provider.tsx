@@ -36,7 +36,11 @@ export default function CookieProvider({ children }: { children: React.ReactNode
     refreshFromCookie();
   }, []);
 
-  const value = useMemo<CookieContextValue>(() => ({ user, setUser, refreshFromCookie }), [user]);
+  const value = useMemo<CookieContextValue>(() => ({ 
+    user, 
+    setUser, 
+    refreshFromCookie
+  }), [user, refreshFromCookie]);
 
   return <CookieContext.Provider value={value}>{children}</CookieContext.Provider>;
 }
