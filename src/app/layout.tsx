@@ -26,7 +26,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/image/logo.svg" sizes="any" />
       </head>
-      <body className={`${raleway.className} antialiased`}>
+      <body className={`${raleway.className} antialiased`} suppressHydrationWarning>
         <ErrorBoundary>
           <CookieProvider>
             <ThemeProvider

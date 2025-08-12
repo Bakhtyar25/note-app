@@ -10,12 +10,14 @@ type CookieContextValue = {
   user: AuthUser;
   setUser: (u: AuthUser) => void;
   refreshFromCookie: () => void;
+  isMounted: boolean;
 };
 
 const CookieContext = createContext<CookieContextValue | undefined>(undefined);
 
 export default function CookieProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser>(null);
+  const [isMounted, setIsMounted] = useState(false);
   const pathname = usePathname();
 
   const refreshFromCookie = () => {
@@ -28,18 +30,22 @@ export default function CookieProvider({ children }: { children: React.ReactNode
   };
 
   useEffect(() => {
+    setIsMounted(true);
     refreshFromCookie();
   }, []);
 
   useEffect(() => {
-    refreshFromCookie();
-  }, [pathname]);
+    if (isMounted) {
+      refreshFromCookie();
+    }
+  }, [pathname, isMounted]);
 
   const value = useMemo<CookieContextValue>(() => ({ 
     user, 
     setUser, 
-    refreshFromCookie
-  }), [user, refreshFromCookie]);
+    refreshFromCookie,
+    isMounted
+  }), [user, refreshFromCookie, isMounted]);
 
   return <CookieContext.Provider value={value}>{children}</CookieContext.Provider>;
 }
