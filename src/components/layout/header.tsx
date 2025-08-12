@@ -14,20 +14,14 @@ type Props = object
 
 export default function Header({ }: Props) {
     const [isOpen, setIsOpen] = useState(false)
-    const [mounted, setMounted] = useState(false)
     const pathname = usePathname()
     const { user } = useCookieUser()
 
     useEffect(() => {
-        setMounted(true)
-        // Close mobile menu on route change
         setIsOpen(false)
     }, [pathname])
 
-    // Prevent hydration mismatch by not rendering user-dependent content until mounted
     const renderAuthButtons = () => {
-        if (!mounted) return null;
-        
         if (!user) {
             return (
                 <>
@@ -45,8 +39,6 @@ export default function Header({ }: Props) {
     };
 
     const renderMobileAuthButtons = () => {
-        if (!mounted) return null;
-        
         if (!user) {
             return (
                 <>
@@ -82,13 +74,13 @@ export default function Header({ }: Props) {
                     <Image src="/image/logoText.svg" alt="logo" width={1080} height={1080} className='w-36 h-auto block' />
                 </Link>
 
-                {/* Desktop actions */}
+                {/* Desktop */}
                 <div className='hidden md:flex items-center gap-4 min-w-[260px] justify-end'>
                     <ThemeSwitcher />
                     {renderAuthButtons()}
                 </div>
 
-                {/* Mobile trigger */}
+                {/* Mobile menu trigger */}
                 <div className='md:hidden flex items-center gap-3'>
                     <ThemeSwitcher />
                     <button
@@ -100,7 +92,7 @@ export default function Header({ }: Props) {
                     </button>
                 </div>
 
-                {/* Mobile off-canvas menu (fixed, no layout shift) */}
+                {/* Mobile menu */}
                 <div
                     className={cn(
                         'fixed inset-0 z-40 bg-foreground/20 backdrop-blur-sm transition-opacity duration-200',

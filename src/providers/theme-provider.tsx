@@ -7,19 +7,7 @@ export function ThemeProvider({
   children,
   ...props
 }: React.ComponentProps<typeof NextThemesProvider>) {
-  const [mounted, setMounted] = React.useState(false)
-
-  React.useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) {
-    return <div style={{ visibility: 'hidden' }}>{children}</div>
-  }
-
   return (
-    <div suppressHydrationWarning>
-      <NextThemesProvider {...props}>{children}</NextThemesProvider>
-    </div>
+    <NextThemesProvider {...props}>{children}</NextThemesProvider>
   )
 }

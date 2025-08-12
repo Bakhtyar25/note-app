@@ -1,3 +1,5 @@
+"use client"
+
 import { cn } from '@/lib/utils'
 import { LayoutList } from 'lucide-react'
 import React from 'react'

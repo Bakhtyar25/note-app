@@ -5,7 +5,6 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import Header from "@/components/layout/header";
 import CookieProvider from "@/providers/cookie-provider";
 import { Toaster } from "@/components/ui/sonner";
-import ClientOnly from "@/components/custom/client-only";
 import ErrorBoundary from "@/components/custom/error-boundary";
 
 const raleway = Raleway({
@@ -36,12 +35,8 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <ClientOnly>
-                <Header />
-              </ClientOnly>
-              <ClientOnly>
-                <Toaster />
-              </ClientOnly>
+              <Header />
+              <Toaster />
               <div className="bg-background">{children}</div>
             </ThemeProvider>
           </CookieProvider>

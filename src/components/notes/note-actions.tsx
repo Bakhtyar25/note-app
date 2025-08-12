@@ -1,3 +1,5 @@
+"use client"
+
 import React from 'react'
 import NotesViewSwitcher from './notes-view-switcher'
 import AddNote from './add-note'

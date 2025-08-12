@@ -8,15 +8,8 @@ export default function WelcomeToast() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const hasShownToast = useRef(false);
-  const [mounted, setMounted] = useState(false);
   
   useEffect(() => {
-    setMounted(true);
-  }, []);
-  
-  useEffect(() => {
-    if (!mounted) return;
-    
     const welcome = searchParams.get("welcome");
     if (welcome === "true" && !hasShownToast.current) {
       hasShownToast.current = true;
@@ -26,7 +19,7 @@ export default function WelcomeToast() {
       newUrl.searchParams.delete("welcome");
       router.replace(newUrl.pathname);
     }
-  }, [searchParams, router, mounted]);
+  }, [searchParams, router]);
   
   return null;
 }
