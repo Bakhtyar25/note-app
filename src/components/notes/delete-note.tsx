@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useTransition } from 'react'
 import { DialogClose, DialogFooter } from '../ui/dialog'
 import { Button } from '../ui/button'

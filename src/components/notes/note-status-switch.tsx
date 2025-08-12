@@ -1,3 +1,5 @@
+"use client"
+
 import { updateNoteStatus } from '@/actions/note'
 import { useCookieUser } from '@/providers/cookie-provider'
 import { Square, SquareCheck } from 'lucide-react'
