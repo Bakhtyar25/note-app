@@ -33,7 +33,7 @@ export default function LogOut({ }: Props) {
                             <DialogClose asChild>
                                 <Button type='button' variant="default" className='bg-success hover:bg-success/80 text-white hover:text-white'>No, Cancel</Button>
                             </DialogClose>
-                            <Button disabled={isPending} type='submit' className='w-full lg:w-1/2' variant="destructive" onClick={handleLogout}>
+                            <Button disabled={isPending} type='submit' className='w-full md:w-1/2' variant="destructive" onClick={handleLogout}>
                                 {isPending ? <Loader2 className='animate-spin' /> : "Yes, Logout"}
                             </Button>
                         </DialogFooter>
