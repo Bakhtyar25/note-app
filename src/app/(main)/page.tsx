@@ -1,12 +1,8 @@
 
-import dynamic from "next/dynamic";
 import { getNotes } from "@/actions/note";
 import WelcomeToast from "@/components/custom/welcome-toast";
 import ClientOnly from "@/components/custom/client-only";
-
-const NotesContainer = dynamic(() => import("@/components/notes/notes-container"), {
-  ssr: false,
-});
+import NotesWrapper from "@/components/notes/notes-wrapper";
 
 export default async function Home() {
   const notes = await getNotes()
@@ -15,7 +11,7 @@ export default async function Home() {
       <ClientOnly>
         <WelcomeToast />
       </ClientOnly>
-      <NotesContainer notes={notes} />
+      <NotesWrapper notes={notes} />
     </div>
   );
 }
