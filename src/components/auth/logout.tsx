@@ -4,17 +4,31 @@ import { logOut } from '@/actions/auth';
 import { useTransition } from 'react';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 type Props = object
 
 export default function LogOut({ }: Props) {
     const [isPending, startTransition] = useTransition()
+    const router = useRouter()
+    
     const handleLogout = () => {
         startTransition(async () => {
-            await logOut()
-            toast.success("Logout successful")
+            try {
+                const result = await logOut()
+                if (result?.success) {
+                    toast.success("Logout successful")
+                    router.push("/login")
+                } else {
+                    toast.error("Logout failed")
+                }
+            } catch (error) {
+                console.error('Logout error:', error)
+                toast.error("Logout failed")
+            }
         })
     }
+    
     return (
         <Dialog>
             <div className=''>

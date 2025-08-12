@@ -3,7 +3,6 @@
 import { authEndpoints } from "@/lib/endpoints";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 // Define the user interface based on what we expect from the API
 interface ApiUser {
@@ -31,7 +30,8 @@ export async function createUser({
 
 export async function logOut() {
   (await cookies()).delete("user");
-  redirect("/login");
+  revalidatePath("/");
+  return { success: true };
 }
 
 export async function login({ email, password }: { email: string; password: string }) {
